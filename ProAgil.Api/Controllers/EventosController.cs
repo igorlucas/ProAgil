@@ -78,12 +78,12 @@ namespace ProAgilServer.Controllers
             return BadRequest();
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, Evento evento)
         {
             try
             {
-                var eventoBD = _repository.GetEventosAsyncById(id, false);
+                var eventoBD = await _repository.GetEventosAsyncById(id, false);
                 if (eventoBD == null) return NotFound();
 
                 _repository.Update(evento);
@@ -97,19 +97,20 @@ namespace ProAgilServer.Controllers
             return BadRequest();
         }
 
-        [HttpDelete]    
-        public async Task<IActionResult> Delete(int id, Evento evento)
+        [HttpDelete("{id}")]    
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                var eventoBD = _repository.GetEventosAsyncById(id, false);
-                if (eventoBD == null) return NotFound();
+                var evento = await _repository.GetEventosAsyncById(id, false);
+                if (evento == null) return NotFound();
 
                 _repository.Delete(evento);
                 if (await _repository.SaveChangesAsync()) return Ok();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                var err = ex;
                 return StatusCode(StatusCodes.Status500InternalServerError, "Banco de dados falhou!");
             }
             return BadRequest();
