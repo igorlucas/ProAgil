@@ -93,15 +93,6 @@ namespace ProAgilServer.Controllers
         {
             try
             {
-                eventoDto.Palestrantes.Add(new PalestranteDto()
-                {
-                    Id = 1,
-                    Nome = "Igor Lucas N Silva",
-                    Descricao = "Engenheiro de Software", 
-                    Email = "igor@gmail.com",
-                    ImagemURL = "img1.jpg",
-                    Telefone = "(85)985717410"
-                });
                 var evento = await _repository.GetEventosAsyncById(id, false);
                 if (evento == null) return NotFound();
                 _mapper.Map(eventoDto, evento);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -7,29 +8,32 @@ namespace ProAgil.Api.Dtos
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "O campo {0} é obrigatório!")]
+        [Required(ErrorMessage = "O campo {0} ï¿½ obrigatï¿½rio!")]
+        [StringLength(100, MinimumLength=3, ErrorMessage="O campo {0} deve estar entre 3 a 100 caracteres")]
         public string Local { get; set; }
 
-        [Required(ErrorMessage = "O campo {0} é obrigatório!")]
-        public string DataEvento { get; set; }
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy hh:mm:ss}")]
+        [Required(ErrorMessage = "O campo {0} ï¿½ obrigatï¿½rio!")]
+        public DateTime DataEvento { get; set; }
 
-        [Required(ErrorMessage = "O campo {0} é obrigatório!")]
+        [Required(ErrorMessage = "O campo {0} ï¿½ obrigatï¿½rio!")]
         public string Tema { get; set; }
 
-        [Required(ErrorMessage = "O campo {0} é obrigatório!")]
+        [Required(ErrorMessage = "O campo {0} ï¿½ obrigatï¿½rio!")]
         [Range(2, 1200)]
         public int QtdPessoas { get; set; }
         
         public List<LoteDto> Lotes { get; set; }
 
-        [Required(ErrorMessage = "O campo {0} é obrigatório!")]
+        [Required(ErrorMessage = "O campo {0} ï¿½ obrigatï¿½rio!")]
         public string ImagemUrl { get; set; }
         
-        [Required(ErrorMessage = "O campo {0} é obrigatório!")]
+        [Required(ErrorMessage = "O campo {0} ï¿½ obrigatï¿½rio!")]
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "O campo {0} é obrigatório!")]
+        [Required(ErrorMessage = "O campo {0} ï¿½ obrigatï¿½rio!")]
         public string Telefone { get; set; }
         
         public List<RedeSocialDto> RedesSociais { get; set; }
