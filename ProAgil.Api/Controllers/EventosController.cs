@@ -7,6 +7,8 @@ using ProAgil.Domain;
 using ProAgil.Repository;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace ProAgilServer.Controllers
@@ -70,6 +72,32 @@ namespace ProAgilServer.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Banco de dados falhou!");
             }
+        }
+
+        [HttpPost("upload")]
+        public async Task<IActionResult> Upload()
+        {
+            try
+            {
+                var file = Request.Form.Files[0];
+                var folderName = Path.Combine("Resources", "Images");
+                var pathToSalve = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                if(file.Length > 0){
+                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName;
+                    var fullPath = Path.Combine(pathToSalve, fileName.Replace("\"", " ").Trim());
+
+                    using(var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);        
+                    }
+                }
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Banco de dados falhou!");
+            }
+            return BadRequest("Erro ao tentar realizar o upload!");
         }
 
         [HttpPost]
