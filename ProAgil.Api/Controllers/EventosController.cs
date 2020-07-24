@@ -8,6 +8,7 @@ using ProAgil.Repository;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
@@ -121,8 +122,23 @@ namespace ProAgilServer.Controllers
         {
             try
             {
+
                 var evento = await _repository.GetEventosAsyncById(id, false);
                 if (evento == null) return NotFound();
+
+                var idLotes = new List<int>();
+                var idRedesSociais = new List<int>();
+                
+                eventoDto.Lotes.ForEach(lote=> idLotes.Add(lote.Id));
+                eventoDto.RedesSociais.ForEach(redeSocial=> idRedesSociais.Add(redeSocial.Id));
+                
+                var lotes = evento.Lotes.Where(lote=> !idLotes.Contains(lote.Id)).ToArray();
+                var redesSociais = evento.RedesSociais.Where(redeSocial=> !idRedesSociais.Contains(redeSocial.Id)).ToArray();                
+                
+                if(lotes.Length > 0) _repository.DeleteRange(lotes);
+                if(redesSociais.Length > 0) _repository.DeleteRange(redesSociais);
+                
+
                 _mapper.Map(eventoDto, evento);
                 _repository.Update(evento);
                 if (await _repository.SaveChangesAsync())
