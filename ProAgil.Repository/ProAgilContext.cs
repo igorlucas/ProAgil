@@ -8,6 +8,8 @@ namespace ProAgil.Repository
 {
     public class ProAgilContext : IdentityDbContext<User, Role, int, IdentityUserClaim<int>, UserRole, IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
+        // dotnet ef --startup-project ../ProAgil.Api/ migrations add init
+        // dotnet ef --startup-project ../ProAgil.Api/ database update
         public ProAgilContext(DbContextOptions<ProAgilContext> options) : base(options) { }
 
         public DbSet<Evento> Eventos { get; set; }

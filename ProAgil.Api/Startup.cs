@@ -28,7 +28,7 @@ namespace ProAgilServer
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ProAgilContext>(x => x.UseSqlite(Configuration.GetConnectionString("Default")));
+            services.AddDbContext<ProAgilContext>(x => x.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
             
             IdentityBuilder builder = services.AddIdentityCore<User>(opt => {
                 opt.Password.RequireDigit = false;
